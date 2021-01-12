@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:onClick="Login"
+
         android:background="@drawable/btn_login"
         android:text="Login"
         android:textColor="#F6F5F8"

@@ -17,17 +17,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-    TextView txtUserCurrent;
+    /*TextView txtUserCurrent;
 
     FirebaseUser firebaseUser;
-    DatabaseReference reference;
+    DatabaseReference reference;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtUserCurrent = findViewById(R.id.txt_usernamedisplay);
+        /*txtUserCurrent = findViewById(R.id.txt_usernamedisplay);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference= FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
 
@@ -42,6 +42,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        });*/
     }
 }

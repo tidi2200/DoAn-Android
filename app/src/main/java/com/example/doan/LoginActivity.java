@@ -30,19 +30,40 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         editLoginUsername = (EditText)findViewById(R.id.edt_username);
         editLoginPassword = (EditText)findViewById(R.id.edt_password);
-        btnlogin = (Button)findViewById(R.id.btn_login);
-        btnsignup = (Button)findViewById(R.id.btn_signup);
 
         auth = FirebaseAuth.getInstance();
+
+        btnlogin = (Button)findViewById(R.id.btn_login);
+        btnlogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 user = editLoginUsername.getText().toString();
+                 pass = editLoginPassword.getText().toString();
+                auth.signInWithEmailAndPassword(user, pass)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    Intent intent = new Intent(LoginActivity.this, ListUser.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        });
+            }
+        });
+        btnsignup = (Button)findViewById(R.id.btn_signup);
+
+        /*auth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if(firebaseUser!=null){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, ListUser.class);
             startActivity(intent);
             finish();
-        }
+        }*/
     }
 
-    public void Login(View view) {
+   /* public void Login(View view) {*/
 //        if(editLoginUsername.getText().length() != 0 && editLoginPassword.getText().length() != 0) {
 //            if(editLoginUsername.getText().toString().equals("quang") && editLoginPassword.getText().toString().equals("1")) {
 //                Toast.makeText(LoginActivity.this,"Bạn đã đăng nhập thành công ",Toast.LENGTH_SHORT).show();
@@ -55,19 +76,19 @@ public class LoginActivity extends AppCompatActivity {
 //            Toast.makeText(LoginActivity.this,"Yêu cầu bạn nhập đủ thông tin ",Toast.LENGTH_SHORT).show();
 //        }
 
-        String username = editLoginUsername.getText().toString();
+        /*String username = editLoginUsername.getText().toString();
         String password = editLoginPassword.getText().toString();
         auth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, ListUser.class);
                             startActivity(intent);
                         }
                     }
-                });
-    }
+                });*/
+/*    }*/
 
 
     public void OppenSignUp(View view) {
