@@ -55,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
 //        }
 
 
-        auth.createUserWithEmailAndPassword(email,pass)
+        auth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

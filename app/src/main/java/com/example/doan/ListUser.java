@@ -3,6 +3,7 @@ package com.example.doan;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ListUser extends AppCompatActivity {
@@ -26,51 +28,49 @@ public class ListUser extends AppCompatActivity {
     RecyclerView recyclerView;
 
     UserAdapter userAdapter;
-    List<User> lstUser;
-    Context mContext;
+    LinkedList<User> lstUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reccyclerview_userlist);
-
-        lstUser= new ArrayList<>();
-
-        DisplayData();
-
-        mContext = ListUser.this;
-
+        lstUser = new LinkedList<User>();
         recyclerView = findViewById(R.id.rev_listuser);
-        userAdapter = new UserAdapter(mContext,lstUser);
-        recyclerView.setAdapter(userAdapter);
-//        recyclerView.setHasFixedSize(true);
+//        userAdapter = new UserAdapter(this,lstUser);
+//        recyclerView.setAdapter(userAdapter);
+        lstUser = getAllUser();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
-    public void DisplayData(){
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
 
-        reference.addValueEventListener(new ValueEventListener() {
+    public LinkedList<User> getAllUser(){
+        LinkedList<User> lstUser = new LinkedList<>();
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference usersdRef = rootRef.child("user");
+        ValueEventListener eventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                lstUser.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    assert user != null;
-                    assert firebaseUser != null;
-                    if (!user.getId().equals(firebaseUser.getUid())) {
-                        lstUser.add(user);
-                    }
+                    String username = ds.child("username").getValue(String.class);
+                    String id = ds.child("id").getValue(String.class);
+                    String img = ds.child("ImageURL").getValue(String.class);
+
+                    User user = new User(id,username,img);
+                    String usera = user.getUsername();
+                    Log.d("TAG", username);
+                    Log.d("Tag_user", usera);
+                    lstUser.addLast(user);
                 }
-
+                userAdapter = new UserAdapter(ListUser.this,lstUser);
+                recyclerView.setAdapter(userAdapter);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        usersdRef.addListenerForSingleValueEvent(eventListener);
+        return lstUser;
     }
 }
