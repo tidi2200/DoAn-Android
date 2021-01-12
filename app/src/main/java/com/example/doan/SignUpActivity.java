@@ -40,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void SignUp(View view) {
-        String username = edtSignupUsername.getText().toString().trim();
+        String user = edtSignupUsername.getText().toString().trim();
         String pass = edtSignupPassword.getText().toString().trim();
         String email = editSignupEmail.getText().toString().trim();
 //        editLoginUsername.setText(user);
@@ -55,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
 //        }
 
 
-        auth.createUserWithEmailAndPassword(email, pass)
+        auth.createUserWithEmailAndPassword(email,pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -67,7 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             HashMap<String, String> hashMap= new HashMap<>();
                             hashMap.put("id", userid);
-                            hashMap.put("username", username);
+                            hashMap.put("username", email);
                             hashMap.put("ImageURL","default");
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
