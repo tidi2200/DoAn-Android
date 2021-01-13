@@ -2,15 +2,19 @@ package com.example.doan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,6 +39,12 @@ public class MessageActivity extends AppCompatActivity {
 
     ImageButton btn_send;
     EditText edt_message;
+
+    MessageAdapter messageAdapter;
+    LinkedList<Chat> lstChat;
+
+    RecyclerView recyclerView;
+
 
     Intent intent;
 
@@ -53,6 +64,12 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+        recyclerView = findViewById(R.id.rev_messagelist);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
         btn_send = findViewById(R.id.btn_send);
@@ -60,6 +77,8 @@ public class MessageActivity extends AppCompatActivity {
 
         intent= getIntent();
         String userid = intent.getStringExtra("userid");
+
+        fuser = FirebaseAuth.getInstance().getCurrentUser(); //Lấy thông tin của user hiện hành
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +91,10 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        //Khi dữ liệu thay đổi sẽ được cập nhật
+
         reference = FirebaseDatabase.getInstance().getReference("user").child(userid);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -81,6 +103,8 @@ public class MessageActivity extends AppCompatActivity {
                 User user = snapshot.getValue(User.class);
                 username.setText(user.getUsername());
                 profile_image.setImageResource(R.mipmap.ic_launcher);
+
+                DisplayMessage(fuser.getUid(), userid, user.getImageURL());
             }
 
             @Override
@@ -101,4 +125,34 @@ public class MessageActivity extends AppCompatActivity {
         reference.child("chat").push().setValue(hashMap);
     }
 
+    private void DisplayMessage(String myid, String userid, String imageurl) {
+        lstChat = new LinkedList<>();
+
+        reference = FirebaseDatabase.getInstance().getReference("chat");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                lstChat.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+
+//                    String sender = ds.child("sender").getValue(String.class);
+//                    String receiver = ds.child("receiver").getValue(String.class);
+//                    String message = ds.child("message").getValue(String.class);
+
+                    Chat chat = ds.getValue(Chat.class);
+                    if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) ||
+                            chat.getReceiver().equals(myid) && chat.getSender().equals(userid)) {
+                        lstChat.add(chat);
+                    }
+                }
+                messageAdapter = new MessageAdapter(MessageActivity.this,lstChat,imageurl);
+                recyclerView.setAdapter(messageAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }

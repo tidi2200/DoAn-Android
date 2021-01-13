@@ -89,6 +89,7 @@ public class Contact extends AppCompatActivity {
         usersdRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                lstUser.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                     String username = ds.child("username").getValue(String.class);
