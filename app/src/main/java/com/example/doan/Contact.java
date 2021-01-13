@@ -25,7 +25,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//Hiện danh sách user
 public class Contact extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -80,6 +80,7 @@ public class Contact extends AppCompatActivity {
         DisplayData();
     }
 
+    //Hiện danh sách user lên recycler view (sự kiện conversation cho mỗi user được viết bên UserAdapter)
     public void DisplayData(){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();

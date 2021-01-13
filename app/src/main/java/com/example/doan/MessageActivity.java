@@ -25,11 +25,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+//Conversation của mỗi user
 public class MessageActivity extends AppCompatActivity {
     CircleImageView profile_image;
     TextView username;
@@ -41,7 +44,7 @@ public class MessageActivity extends AppCompatActivity {
     EditText edt_message;
 
     MessageAdapter messageAdapter;
-    LinkedList<Chat> lstChat;
+    List<Chat> lstChat;
 
     RecyclerView recyclerView;
 
@@ -93,7 +96,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
 
-        //Khi dữ liệu thay đổi sẽ được cập nhật
+        //Lấy thông tin của receiver và hiển thị message list khi dữ liệu thay đổi sẽ được cập nhật
 
         reference = FirebaseDatabase.getInstance().getReference("user").child(userid);
 
@@ -126,7 +129,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void DisplayMessage(String myid, String userid, String imageurl) {
-        lstChat = new LinkedList<>();
+        lstChat = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("chat");
         reference.addValueEventListener(new ValueEventListener() {

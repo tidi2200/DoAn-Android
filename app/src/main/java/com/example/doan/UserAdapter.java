@@ -43,6 +43,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             holder.profile_img.setImageResource(R.mipmap.ic_launcher);
         }
 
+
+        //Dùng để thêm event chuyển sang conversation của mỗi user khi user đó được click vào
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
