@@ -34,4 +34,10 @@ public class User {
         this.username = Username;
         this.imageURL = ImageURL;
     }
+
+    public User(){
+        this.id = null;
+        this.username = null;
+        this.imageURL = null;
+    }
 }

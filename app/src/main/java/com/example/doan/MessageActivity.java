@@ -56,16 +56,16 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usermessage);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
 
         recyclerView = findViewById(R.id.rev_messagelist);
         recyclerView.setHasFixedSize(true);
@@ -96,6 +96,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
 
+
         //Lấy thông tin của receiver và hiển thị message list khi dữ liệu thay đổi sẽ được cập nhật
 
         reference = FirebaseDatabase.getInstance().getReference("user").child(userid);
@@ -108,6 +109,7 @@ public class MessageActivity extends AppCompatActivity {
                 profile_image.setImageResource(R.mipmap.ic_launcher);
 
                 DisplayMessage(fuser.getUid(), userid, user.getImageURL());
+//                messageAdapter.notifyDataSetChanged(); //Làm mới lại recyclerview để realtime theo database
             }
 
             @Override
@@ -144,7 +146,7 @@ public class MessageActivity extends AppCompatActivity {
 
                     Chat chat = ds.getValue(Chat.class);
                     if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(myid) && chat.getSender().equals(userid)) {
+                            chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
                         lstChat.add(chat);
                     }
                 }

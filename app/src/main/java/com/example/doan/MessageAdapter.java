@@ -38,6 +38,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 //        lstUser = mUser;
 //    }
 
+
     @NonNull
     @Override
     public MessageAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,9 +57,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         Chat chat = lstChat.get(position);
 
         holder.show_message.setText(chat.getMessage());
-        if (!imgURL.equals("default"))
-            holder.profile_img.setImageResource(R.mipmap.ic_launcher);
-        else holder.profile_img.setImageResource(R.mipmap.ic_launcher);
+        holder.profile_img.setImageResource(R.mipmap.ic_launcher);
     }
 
     @Override

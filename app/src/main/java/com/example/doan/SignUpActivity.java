@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,7 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void SignUp(View view) {
-        String user = edtSignupUsername.getText().toString().trim();
+        String username = edtSignupUsername.getText().toString().trim();
         String pass = edtSignupPassword.getText().toString().trim();
         String email = editSignupEmail.getText().toString().trim();
 //        editLoginUsername.setText(user);
@@ -67,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             HashMap<String, String> hashMap= new HashMap<>();
                             hashMap.put("id", userid);
-                            hashMap.put("username", email);
+                            hashMap.put("username", username);
                             hashMap.put("ImageURL","default");
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {

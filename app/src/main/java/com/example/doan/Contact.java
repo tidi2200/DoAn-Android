@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,10 +30,14 @@ import java.util.List;
 public class Contact extends AppCompatActivity {
 
     RecyclerView recyclerView;
-
+    TextView txtUserCurrent;
     UserAdapter userAdapter;
     List<User> lstUser;
     Context mContext;
+
+    FirebaseUser firebaseUser;
+
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,26 @@ public class Contact extends AppCompatActivity {
         setContentView(R.layout.activity_contact);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.Contact);
+
+        //Hiển thị username đang đăng nhập
+        txtUserCurrent = findViewById(R.id.usernamecurrentdisplay);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                Intent intent = getIntent();
+                txtUserCurrent.setText(user.getUsername());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -64,9 +89,6 @@ public class Contact extends AppCompatActivity {
         circularImageView.setBorderColorEnd(Color.MAGENTA);
         circularImageView.setShadowRadius(7f);
         circularImageView.setShadowGravity(CircularImageView.ShadowGravity.CENTER);
-
-
-
 
         lstUser= new ArrayList<>();
 

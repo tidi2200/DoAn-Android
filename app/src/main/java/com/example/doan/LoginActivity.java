@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,6 +18,11 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     EditText editLoginUsername,editLoginPassword;
@@ -24,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
+
+    DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,14 +62,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         btnsignup = (Button)findViewById(R.id.btn_signup);
-
-        /*auth = FirebaseAuth.getInstance();
+        //Giu trang thai dang nhap
+        auth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         if(firebaseUser!=null){
-            Intent intent = new Intent(LoginActivity.this, ListUser.class);
+            Intent intent = new Intent(LoginActivity.this, Contact.class);
             startActivity(intent);
             finish();
-        }*/
+        }
+
     }
 
    /* public void Login(View view) {*/
@@ -94,7 +105,6 @@ public class LoginActivity extends AppCompatActivity {
     public void OppenSignUp(View view) {
         Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
         startActivity(intent);
-
     }
 
 }

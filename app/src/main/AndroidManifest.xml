@@ -23,7 +23,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-
+        <activity android:name=".Contact"/>
+        <activity android:name=".MessageActivity"/>
+        <activity android:name=".Message"/>
+        <activity android:name=".Setting"/>
 
     </application>
 
