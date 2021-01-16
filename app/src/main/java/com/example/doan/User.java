@@ -4,7 +4,7 @@ public class User {
     private String id;
     private String username;
     private String imageURL;
-
+    private String  status;
     public String getId() {
         return id;
     }
@@ -29,9 +29,21 @@ public class User {
         this.imageURL = imageURL;
     }
 
-    public User(String Id, String Username, String ImageURL){
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
+
+    public User(String Id, String Username, String ImageURL, String status){
         this.id = Id;
         this.username = Username;
         this.imageURL = ImageURL;
+        this.status = status;
     }
+
+    public User(){
+        this.id = null;
+        this.username = null;
+        this.imageURL = null;
+    }
+
 }
