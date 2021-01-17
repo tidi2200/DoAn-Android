@@ -64,7 +64,7 @@ public class Contact extends AppCompatActivity {
                     profileAvatar.setImageResource(R.mipmap.ic_launcher);
                 }
                 else{
-                    Glide.with(mContext).load(user.getImageURL()).into(profileAvatar);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profileAvatar);
                 }
             }
 
