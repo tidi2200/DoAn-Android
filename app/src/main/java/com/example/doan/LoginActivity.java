@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText editLoginUsername,editLoginPassword;
     Button btnlogin,btnsignup;
     String user,pass;
-
+    TextView forgot_password;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
 
@@ -31,6 +32,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         editLoginUsername = (EditText)findViewById(R.id.edt_username);
         editLoginPassword = (EditText)findViewById(R.id.edt_password);
+        forgot_password = findViewById(R.id.forgot_password);
+
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,RessetPasswordActivity.class));
+            }
+        });
 
         auth = FirebaseAuth.getInstance();
 

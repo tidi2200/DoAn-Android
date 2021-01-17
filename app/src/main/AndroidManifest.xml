@@ -13,8 +13,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.DoAn">
+        android:theme="@style/Theme.DoAn"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".RessetPasswordActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,12 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".Contact"/>
-        <activity android:name=".MessageActivity"/>
-        <activity android:name=".Message"/>
-        <activity android:name=".Setting"/>
-
+        <activity android:name=".Contact" />
+        <activity android:name=".MessageActivity" />
+        <activity android:name=".Message" />
+        <activity android:name=".Setting" />
     </application>
-
 
 </manifest>
