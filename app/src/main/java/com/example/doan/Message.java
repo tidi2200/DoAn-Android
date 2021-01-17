@@ -33,7 +33,7 @@ public class Message extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
 
-    List<String> userList;
+    List<ChatList> userList;
     DatabaseReference reference;
     Context mContext;
     @Override
