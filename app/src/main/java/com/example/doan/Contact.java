@@ -26,6 +26,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 //Hiện danh sách user
 public class Contact extends AppCompatActivity {
@@ -97,7 +98,7 @@ public class Contact extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rev_userlist);
 
-//        recyclerView.setHasFixedSize(true);
+       //recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         DisplayData();
@@ -122,8 +123,8 @@ public class Contact extends AppCompatActivity {
                     String status = ds.child("status").getValue(String.class);
                     User user = new User(id,username,img,status);
                     String usera = user.getUsername();
-                    Log.d("TAG", username);
-                    Log.d("Tag_user", usera);
+//                    Log.d("TAG", Objects.requireNonNull(username));
+                   // Log.d("Tag_user", usera);
                     lstUser.add(user);
                 }
                 userAdapter = new UserAdapter(mContext,lstUser,true);
@@ -131,7 +132,7 @@ public class Contact extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.w("Failed to read value.", error.toException());
             }
         });
     }

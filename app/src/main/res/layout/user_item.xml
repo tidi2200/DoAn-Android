@@ -12,6 +12,9 @@
         android:layout_width="56dp"
         android:layout_height="45dp"
         android:contentDescription="@string/todo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:src="@mipmap/ic_launcher" />
 
     <TextView

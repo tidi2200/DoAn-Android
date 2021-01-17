@@ -38,11 +38,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = lstUser.get(position);
         holder.username.setText(user.getUsername());
-        if (user.getImageURL().equals("default")) {
+/*        if (user.getImageURL().equals("default")) {
             holder.profile_img.setImageResource(R.mipmap.ic_launcher);
         } else {
             holder.profile_img.setImageResource(R.mipmap.ic_launcher);
-        }
+        }*/
 
         if(ischat){
             if(user.getStatus().equals("online")){

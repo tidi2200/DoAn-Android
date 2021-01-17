@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/white</item>
         <item name="android:colorForeground">@color/foreground_material_light</item>
     </style>
-    <style name="MenuStyle" parent="Theme.AppCompat.Light">
+    <style name="MenuStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:background">@android:color/white</item>
     </style>
     <dimen name="activity_horizontal_margin">16dp</dimen>
