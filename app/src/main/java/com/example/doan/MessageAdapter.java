@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -55,7 +56,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         Chat chat = lstChat.get(position);
 
         holder.show_message.setText(chat.getMessage());
-        holder.profile_img.setImageResource(R.mipmap.ic_launcher);
+        if(imgURL.equals("default")){
+            holder.profile_img.setImageResource(R.mipmap.ic_launcher);
+        }else{
+            Glide.with(context).load(imgURL).into(holder.profile_img);
+        }
+
+        if(position == lstChat.size()-1){
+            if(chat.getIsseen()){
+                holder.txt_seen.setText("Đã xem");
+            }else{
+                holder.txt_seen.setText("Đã gửi");
+            }
+        }else{
+            holder.txt_seen.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -65,6 +80,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public class MessageViewHolder extends RecyclerView.ViewHolder {
         public TextView show_message;
+        public TextView txt_seen;
         public ImageView profile_img;
 
 
@@ -73,6 +89,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             show_message = itemView.findViewById(R.id.txt_msg);
             profile_img = itemView.findViewById(R.id.profile_image);
+            txt_seen =  itemView.findViewById(R.id.txt_isSeenMSG);
         }
     }
 

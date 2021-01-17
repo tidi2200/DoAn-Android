@@ -21,14 +21,12 @@
         android:id="@+id/txt_username_messageitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="TextView"
-        android:layout_marginLeft="10dp"
-        android:textSize="25sp"
-        android:layout_toRightOf="@+id/imageView_user"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="8dp"
         android:layout_toEndOf="@+id/imageView_user"
-        android:layout_centerVertical="true"
- />
+        android:layout_toRightOf="@+id/imageView_user"
+        android:text="TextView"
+        android:textSize="23sp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="15dp"
@@ -52,4 +50,15 @@
         android:layout_marginLeft="-15dp"
         android:visibility="gone"
         android:layout_toEndOf="@+id/imageView_user" />
+
+    <TextView
+        android:id="@+id/txt_lastmsgitem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_username_messageitem"
+        android:layout_alignStart="@+id/txt_username_messageitem"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="0dp"
+        android:maxLines="1"
+        android:text="TextView" />
 </RelativeLayout>

@@ -49,8 +49,8 @@ public class RessetPasswordActivity extends AppCompatActivity {
                                 startActivity(new Intent(RessetPasswordActivity.this,LoginActivity.class));
                             }
                             else {
-                                String erro = task.getException().getMessage();
-                                Toast.makeText(RessetPasswordActivity.this, erro, Toast.LENGTH_SHORT).show();
+//                                String erro = task.getException().getMessage();
+                                Toast.makeText(RessetPasswordActivity.this, "Tài khoản này chưa đăng ký thành viên !", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
