@@ -25,8 +25,7 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".Contact"/>
         <activity android:name=".MessageActivity"
-            android:parentActivityName="com.example.doan.Message" >
-        
+            android:parentActivityName="com.example.doan.Contact" >
         </activity>
         <activity android:name=".Message"/>
         <activity android:name=".Setting"/>
