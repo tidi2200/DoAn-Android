@@ -122,9 +122,9 @@ public class Setting extends AppCompatActivity {
     }
 
     private void uploadImage(){
-//        final ProgressDialog pd = new ProgressDialog(Setting.class);
-//        pd.setMessage("Uploading");
-//        pd.show();
+//       final ProgressDialog pd = new ProgressDialog(getApplicationContext());
+//       pd.setMessage("Uploading");
+//       pd.show();
 
         if(imageUri != null)
         {
