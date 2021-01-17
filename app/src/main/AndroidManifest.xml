@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+<!--        android:theme="@style/Theme.DoAn"-->
+        android:usesCleartextTraffic="true">
+        <activity android:name=".RessetPasswordActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,10 +30,8 @@
         <activity android:name=".MessageActivity"
             android:parentActivityName="com.example.doan.Contact" >
         </activity>
-        <activity android:name=".Message"/>
-        <activity android:name=".Setting"/>
-
+        <activity android:name=".Message" />
+        <activity android:name=".Setting" />
     </application>
-
 
 </manifest>
