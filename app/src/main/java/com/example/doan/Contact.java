@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -13,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +30,7 @@ import java.util.List;
 //Hiện danh sách user
 public class Contact extends AppCompatActivity {
 
+    com.mikhaellopez.circularimageview.CircularImageView profileAvatar;
     RecyclerView recyclerView;
     TextView txtUserCurrent;
     UserAdapter userAdapter;
@@ -49,6 +50,7 @@ public class Contact extends AppCompatActivity {
 
         //Hiển thị username đang đăng nhập
         txtUserCurrent = findViewById(R.id.usernamecurrentdisplay);
+        profileAvatar = findViewById(R.id.profileavatarcontact);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
 
@@ -56,8 +58,13 @@ public class Contact extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                Intent intent = getIntent();
                 txtUserCurrent.setText(user.getUsername());
+                if(user.getImageURL().equals("default")){
+                    profileAvatar.setImageResource(R.mipmap.ic_launcher);
+                }
+                else{
+                    Glide.with(mContext).load(user.getImageURL()).into(profileAvatar);
+                }
             }
 
             @Override
@@ -84,7 +91,7 @@ public class Contact extends AppCompatActivity {
                 return false;
             }
         });
-        CircularImageView circularImageView = findViewById(R.id.circularImageView);
+        CircularImageView circularImageView = findViewById(R.id.profileavatarcontact);
         circularImageView.setCircleColorDirection(CircularImageView.GradientDirection.TOP_TO_BOTTOM);
         circularImageView.setBorderColorStart(Color.BLACK);
         circularImageView.setBorderColorEnd(Color.MAGENTA);
@@ -122,8 +129,6 @@ public class Contact extends AppCompatActivity {
                     String status = ds.child("status").getValue(String.class);
                     User user = new User(id,username,img,status);
                     String usera = user.getUsername();
-                    Log.d("TAG", username);
-                    Log.d("Tag_user", usera);
                     lstUser.add(user);
                 }
                 userAdapter = new UserAdapter(mContext,lstUser,true);

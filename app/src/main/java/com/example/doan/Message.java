@@ -62,6 +62,7 @@ public class Message extends AppCompatActivity {
         recyclerview = findViewById(R.id.revMessage);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("getUid",firebaseUser.getUid());
 
         userList = new ArrayList<>();
 
@@ -72,11 +73,16 @@ public class Message extends AppCompatActivity {
                 userList.clear();
                 for(DataSnapshot ds : snapshot.getChildren()){
                     Chat chat = snapshot.getValue(Chat.class);
-                    if(chat.getSender() != null && chat.getSender().equals(firebaseUser.getUid())){
+                    if(chat.getSender()!=null && chat.getSender().equals(firebaseUser.getUid())){
                         userList.add(chat.getReceiver());
+                        Log.d("getMess",chat.getReceiver());
+                        Log.d("getUidinDataChange",firebaseUser.getUid());
+
                     }
                     if(chat.getReceiver() != null && chat.getReceiver().equals(firebaseUser.getUid())){
                         userList.add(chat.getSender());
+                        Log.d("getMess",chat.getSender());
+                        Log.d("getUidinDataChange",firebaseUser.getUid());
                     }
                 }
                 displayUserMessage();

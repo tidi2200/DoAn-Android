@@ -1,17 +1,26 @@
 package com.example.doan;
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,23 +29,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class Setting extends AppCompatActivity {
 
-    RecyclerView recyclerview;
-    UserAdapter userAdapter;
-    List<User> lstUser;
+    com.mikhaellopez.circularimageview.CircularImageView profileAvatar;
+    TextView mUsername;
 
-    FirebaseUser firebaseUser;
-    DatabaseReference databaseReference;
+    DatabaseReference reference;
+    FirebaseUser fuser;
 
-    List<String> userList;
-
-    Context mContext;
-
+    StorageReference storageReference;
+    private static final int IMAGE_REQUEST=1;
+    private Uri imageUri;
+    private StorageTask uploadTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,27 +72,26 @@ public class Setting extends AppCompatActivity {
                 return false;
             }
         });
-        recyclerview = findViewById(R.id.revMessage);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        userList = new ArrayList<>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("chat");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        profileAvatar = findViewById(R.id.profileAvatar);
+        mUsername = findViewById(R.id.txtUsernamecurrentprofile);
+
+        storageReference= FirebaseStorage.getInstance().getReference("Upload");
+
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("user").child(fuser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
-                for(DataSnapshot ds : snapshot.getChildren() ){
-                    Chat chat = snapshot.getValue(Chat.class);
-                    if(chat.getSender().equals(firebaseUser.getUid())){
-                        userList.add(chat.getReceiver());
-                    }
-                    if(chat.getReceiver().equals(firebaseUser.getUid())){
-                        userList.add(chat.getSender());
-                    }
+                User user = snapshot.getValue(User.class);
+                mUsername.setText(user.getUsername());
+                if(user.getImageURL().equals("default")){
+                    profileAvatar.setImageResource(R.mipmap.ic_launcher);
                 }
-                displayUserMessage();
+                else{
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profileAvatar);
+                }
             }
 
             @Override
@@ -89,44 +99,87 @@ public class Setting extends AppCompatActivity {
 
             }
         });
-    }
 
-    private void displayUserMessage(){
-        lstUser = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("user");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        profileAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                lstUser.clear();
-
-                for(DataSnapshot ds : snapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-
-                    for(String id : userList){
-                        if(user.getId().equals(id)){
-                            if(lstUser.size() != 0){
-                                for(User user1 : lstUser) {
-                                    if (!user.getId().equals(user1.getId())) {
-                                        lstUser.add(user);
-                                    }
-                                }
-                            }else{
-                                lstUser.add(user);
-                            }
-                        }
-                    }
-                    //userAdapter = new UserAdapter(mContext, lstUser);
-                    recyclerview.setAdapter(userAdapter);
-                }
-                userAdapter.notifyDataSetChanged();
-                Log.d("test_user",String.valueOf(lstUser.size()));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onClick(View v) {
+                openImage();
             }
         });
     }
 
+    private void openImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, IMAGE_REQUEST);
+    }
+
+    private String getFileExtension(Uri uri){
+        ContentResolver contentResolver = getApplicationContext().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void uploadImage(){
+//        final ProgressDialog pd = new ProgressDialog(Setting.class);
+//        pd.setMessage("Uploading");
+//        pd.show();
+
+        if(imageUri != null)
+        {
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis()+"."+getFileExtension(imageUri));
+            uploadTask = fileReference.putFile(imageUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if(!task.isSuccessful()){
+                        throw task.getException();
+                    }
+
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        Uri downloadUri =  task.getResult();
+                        String mUri = downloadUri.toString();
+
+                        reference = FirebaseDatabase.getInstance().getReference("user").child(fuser.getUid());
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("imageURL", mUri);
+                        reference.updateChildren(map);
+
+//                        pd.dismiss();
+                    } else{
+                        Toast.makeText(getApplicationContext(), "Upload that bai", Toast.LENGTH_SHORT).show();
+//                        pd.dismiss();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+//                    pd.dismiss();
+                }
+            });
+        }else{
+            Toast.makeText(getApplicationContext(),"Chua chon hinh",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==IMAGE_REQUEST && resultCode == RESULT_OK &&data!=null&&data.getData()!=null){
+            imageUri = data.getData();
+
+            if(uploadTask!=null&&uploadTask.isInProgress()){
+                Toast.makeText(getApplicationContext(), "Qua trinh upload dang duoc xu ly", Toast.LENGTH_SHORT).show();
+            }else{
+                uploadImage();
+            }
+        }
+    }
 }

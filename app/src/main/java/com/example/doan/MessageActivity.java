@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -106,7 +107,12 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 username.setText(user.getUsername());
-                profile_image.setImageResource(R.mipmap.ic_launcher);
+                if(user.getImageURL().equals("default")){
+                    profile_image.setImageResource(R.mipmap.ic_launcher);
+                }
+                else{
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profile_image);
+                }
 
                 DisplayMessage(fuser.getUid(), userid, user.getImageURL());
 //                messageAdapter.notifyDataSetChanged(); //Làm mới lại recyclerview để realtime theo database
