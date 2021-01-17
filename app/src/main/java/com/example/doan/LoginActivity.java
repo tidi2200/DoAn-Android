@@ -64,14 +64,14 @@ public class LoginActivity extends AppCompatActivity {
         });
         btnsignup = (Button)findViewById(R.id.btn_signup);
         //Giu trang thai dang nhap
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(firebaseUser!=null){
-            Intent intent = new Intent(LoginActivity.this, Contact.class);
-            startActivity(intent);
-            finish();
-        }
+//        auth = FirebaseAuth.getInstance();
+//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//
+//        if(firebaseUser!=null){
+//            Intent intent = new Intent(LoginActivity.this, Contact.class);
+//            startActivity(intent);
+//            finish();
+//        }
 
     }
 
