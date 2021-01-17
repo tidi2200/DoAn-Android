@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Message extends AppCompatActivity {
@@ -32,8 +33,8 @@ public class Message extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
 
-    List<String> userList;
-
+    List<ChatList> userList;
+    DatabaseReference reference;
     Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,26 +67,17 @@ public class Message extends AppCompatActivity {
 
         userList = new ArrayList<>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("chat");
+        databaseReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userList.clear();
                 for(DataSnapshot ds : snapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-                    if(chat.getSender()!=null && chat.getSender().equals(firebaseUser.getUid())){
-                        userList.add(chat.getReceiver());
-                        Log.d("getMess",chat.getReceiver());
-                        Log.d("getUidinDataChange",firebaseUser.getUid());
-
-                    }
-                    if(chat.getReceiver() != null && chat.getReceiver().equals(firebaseUser.getUid())){
-                        userList.add(chat.getSender());
-                        Log.d("getMess",chat.getSender());
-                        Log.d("getUidinDataChange",firebaseUser.getUid());
-                    }
+                    ChatList chatList = ds.getValue(ChatList.class);
+                    userList.add(chatList);
                 }
-                displayUserMessage();
+
+                chatList();
             }
 
             @Override
@@ -93,38 +85,27 @@ public class Message extends AppCompatActivity {
 
             }
         });
-
     }
 
-    private void displayUserMessage(){
+    private void chatList() {
         lstUser = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("user");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 lstUser.clear();
-
                 for(DataSnapshot ds : snapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-
-                    for(String id : userList){
-                        if(user.getId().equals(id)){
-                            if(lstUser.size() != 0){
-                                for(User user1 : lstUser) {
-                                    if (!user.getId().equals(user1.getId())) {
-                                        lstUser.add(user);
-                                    }
-                                }
-                            }else{
-                                lstUser.add(user);
-                            }
+                    User user = ds.getValue(User.class);
+                    for(ChatList chatList : userList){
+                        if(user.getId().equals(chatList.getId())){
+                            lstUser.add(user);
                         }
                     }
-                    userAdapter = new UserAdapter(mContext, lstUser,false);
+                    userAdapter = new UserAdapter(mContext, lstUser,true);
                     recyclerview.setAdapter(userAdapter);
                 }
-                userAdapter.notifyDataSetChanged();
-                Log.d("test_user",String.valueOf(lstUser.size()));
+                userAdapter = new UserAdapter(getApplicationContext(), lstUser, true);
+                recyclerview.setAdapter(userAdapter);
             }
 
             @Override
@@ -132,6 +113,25 @@ public class Message extends AppCompatActivity {
 
             }
         });
+    }
+    private void status(String status){
+        reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("status",status);
+        reference.updateChildren(hashMap);
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -57,14 +58,14 @@ public class Contact extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                User user = snapshot.getValue(User.class);
-//                txtUserCurrent.setText(user.getUsername());
-//                if(user.getImageURL().equals("default")){
-//                    profileAvatar.setImageResource(R.mipmap.ic_launcher);
-//                }
-//                else{
-//                    Glide.with(mContext).load(user.getImageURL()).into(profileAvatar);
-//                }
+                User user = snapshot.getValue(User.class);
+                txtUserCurrent.setText(user.getUsername());
+                if(user.getImageURL().equals("default")){
+                    profileAvatar.setImageResource(R.mipmap.ic_launcher);
+                }
+                else{
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profileAvatar);
+                }
             }
 
             @Override
@@ -104,7 +105,7 @@ public class Contact extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rev_userlist);
 
-//        recyclerView.setHasFixedSize(true);
+       //recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         DisplayData();
@@ -136,7 +137,7 @@ public class Contact extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.w("Failed to read value.", error.toException());
             }
         });
     }

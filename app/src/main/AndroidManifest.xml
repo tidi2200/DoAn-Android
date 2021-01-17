@@ -10,12 +10,11 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="DoAn"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DoAn"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".RessetPasswordActivity"></activity>
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,10 +23,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".Contact" />
-        <activity android:name=".MessageActivity" />
-        <activity android:name=".Message" />
-        <activity android:name=".Setting" />
+        <activity android:name=".Contact"/>
+        <activity android:name=".MessageActivity"
+            android:parentActivityName="com.example.doan.Contact" >
+        </activity>
+        <activity android:name=".Message"/>
+        <activity android:name=".Setting"/>
+
     </application>
 
 </manifest>

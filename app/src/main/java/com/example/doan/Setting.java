@@ -1,8 +1,6 @@
 package com.example.doan;
 
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,10 +38,8 @@ public class Setting extends AppCompatActivity {
 
     com.mikhaellopez.circularimageview.CircularImageView profileAvatar;
     TextView mUsername;
-
     DatabaseReference reference;
     FirebaseUser fuser;
-
     StorageReference storageReference;
     private static final int IMAGE_REQUEST=1;
     private Uri imageUri;
@@ -92,6 +88,7 @@ public class Setting extends AppCompatActivity {
                 else{
                     Glide.with(getApplicationContext()).load(user.getImageURL()).into(profileAvatar);
                 }
+
             }
 
             @Override
@@ -122,9 +119,9 @@ public class Setting extends AppCompatActivity {
     }
 
     private void uploadImage(){
-//        final ProgressDialog pd = new ProgressDialog(Setting.class);
-//        pd.setMessage("Uploading");
-//        pd.show();
+//       final ProgressDialog pd = new ProgressDialog(getApplicationContext());
+//       pd.setMessage("Uploading");
+//       pd.show();
 
         if(imageUri != null)
         {
@@ -181,5 +178,24 @@ public class Setting extends AppCompatActivity {
                 uploadImage();
             }
         }
+    }
+    private void status(String status){
+        reference = FirebaseDatabase.getInstance().getReference("user").child(fuser.getUid());
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("status",status);
+        reference.updateChildren(hashMap);
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 }
