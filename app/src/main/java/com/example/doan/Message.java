@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Message extends AppCompatActivity {
@@ -32,8 +33,8 @@ public class Message extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
 
-    List<ChatList> userList;
-
+    List<String> userList;
+    DatabaseReference reference;
     Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,8 @@ public class Message extends AppCompatActivity {
                             lstUser.add(user);
                         }
                     }
+                    userAdapter = new UserAdapter(mContext, lstUser,true);
+                    recyclerview.setAdapter(userAdapter);
                 }
                 userAdapter = new UserAdapter(getApplicationContext(), lstUser, true);
                 recyclerview.setAdapter(userAdapter);
@@ -111,4 +114,24 @@ public class Message extends AppCompatActivity {
             }
         });
     }
+    private void status(String status){
+        reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("status",status);
+        reference.updateChildren(hashMap);
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
+    }
+
 }
