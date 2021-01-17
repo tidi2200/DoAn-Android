@@ -39,11 +39,9 @@ public class User {
         this.imageURL = ImageURL;
         this.status = status;
     }
-
     public User(){
         this.id = null;
         this.username = null;
         this.imageURL = null;
     }
-
 }
