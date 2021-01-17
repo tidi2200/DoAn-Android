@@ -4,14 +4,23 @@ public class Chat {
     public String sender; //user hiện hành
     public String receiver; //user đang được nhắn tin
     public String message;
+    public boolean isseen;
 
-    public Chat(String sender, String receiver, String message) {
+    public Chat(String sender, String receiver, String message, boolean Isseen) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+        this.isseen = Isseen;
     }
 
     public Chat() {
+    }
+    public boolean getIsseen() {
+        return isseen;
+    }
+
+    public boolean setIsseen() {
+        return isseen;
     }
 
     public String getSender() {

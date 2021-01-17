@@ -126,7 +126,7 @@ public class Contact extends AppCompatActivity {
 
                     String username = ds.child("username").getValue(String.class);
                     String id = ds.child("id").getValue(String.class);
-                    String img = ds.child("ImageURL").getValue(String.class);
+                    String img = ds.child("imageURL").getValue(String.class);
                     String status = ds.child("status").getValue(String.class);
                     User user = new User(id,username,img,status);
                     String usera = user.getUsername();

@@ -23,4 +23,12 @@
         android:textColor="@color/white"
         android:padding="8dp"
         />
+
+    <TextView
+        android:id="@+id/txt_isSeenMSG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_msg"
+        android:visibility="gone"
+        android:text="TextView" />
 </RelativeLayout>
