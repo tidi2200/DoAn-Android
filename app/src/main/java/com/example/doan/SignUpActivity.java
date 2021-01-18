@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,18 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         String username = edtSignupUsername.getText().toString().trim();
         String pass = edtSignupPassword.getText().toString().trim();
         String email = editSignupEmail.getText().toString().trim();
-//        editLoginUsername.setText(user);
-//        editLoginPassword.setText(pass);
-//        if(edtSignupUsername.getText().length() != 0 && edtSignupPassword.getText().length() != 0)
-//        {
-//            Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
-//            startActivity(intent);
-//        }
-//        else {
-//            Toast.makeText(SignUpActivity.this,"Đăng ký thất bại !!!",Toast.LENGTH_SHORT).show();
-//        }
-
-
+      
         auth.createUserWithEmailAndPassword(email,pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -68,15 +58,19 @@ public class SignUpActivity extends AppCompatActivity {
                             hashMap.put("username", username);
                             hashMap.put("imageURL","default");
                             hashMap.put("status","offline");
-                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                                        startActivity(intent);
+
+                                reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                            startActivity(intent);
+
+                                        }
+
                                     }
-                                }
-                            });
+                                });
+
                         }
                     }
                 });

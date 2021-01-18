@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,19 +48,29 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 user = editLoginUsername.getText().toString();
-                 pass = editLoginPassword.getText().toString();
-                auth.signInWithEmailAndPassword(user, pass)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    Intent intent = new Intent(LoginActivity.this, Contact.class);
-                                    startActivity(intent);
-                                    finish();
+                String user = editLoginUsername.getText().toString().trim();
+                String pass = editLoginPassword.getText().toString().trim();
+                if(user.equals("") || pass.equals(""))
+                {
+                    Toast.makeText(LoginActivity.this, "Không được để trống tài khoản hoặc mật khẩu!!", Toast.LENGTH_SHORT).show();
+                }else {
+                    auth.signInWithEmailAndPassword(user, pass)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful()){
+
+                                        Intent intent = new Intent(LoginActivity.this, Contact.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu !!! ", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
+
             }
         });
         btnsignup = (Button)findViewById(R.id.btn_signup);
