@@ -4,9 +4,11 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,10 @@ public class Setting extends AppCompatActivity {
     private static final int IMAGE_REQUEST=1;
     private Uri imageUri;
     private StorageTask uploadTask;
+
+
+    //OPTION SETTING
+    Button btn_UserName, btn_Password, btn_Logout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +83,8 @@ public class Setting extends AppCompatActivity {
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("user").child(fuser.getUid());
+        mUsername.setText(reference.child("username").getKey());
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -101,6 +109,27 @@ public class Setting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openImage();
+            }
+        });
+
+
+
+        //OPTION SETTING (ĐỔI USERNAME, PASSWORD, ĐĂNG XUẤT)
+        btn_Logout = findViewById(R.id.btn_Logout);
+        btn_Logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(Setting.this,LoginActivity.class));
+                finish();
+            }
+        });
+
+        btn_UserName = findViewById(R.id.btn_edtUsername);
+        btn_UserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Setting.this,ChangeUsername.class));
             }
         });
     }
@@ -178,24 +207,5 @@ public class Setting extends AppCompatActivity {
                 uploadImage();
             }
         }
-    }
-    private void status(String status){
-        reference = FirebaseDatabase.getInstance().getReference("user").child(fuser.getUid());
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("status",status);
-        reference.updateChildren(hashMap);
-    }
-
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        status("online");
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        status("offline");
     }
 }

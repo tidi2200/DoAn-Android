@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edt_signup_username" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName5"
+        android:id="@+id/edt_signup_cfmpass"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginTop="40dp"
@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="@+id/edt_signup_username"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edt_signup_username"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_signup_cfmpass" />
 
     <EditText
         android:id="@+id/edt_signup_username"
@@ -131,7 +131,7 @@
         android:text="Confrim Password"
         android:textColor="#040404"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName5"
+        app:layout_constraintStart_toStartOf="@+id/edt_signup_cfmpass"
         app:layout_constraintTop_toBottomOf="@+id/edt_signup_password" />
 
     <TextView
@@ -143,5 +143,5 @@
         android:textColor="#040404"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/edt_signup_email"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_signup_cfmpass" />
 </androidx.constraintlayout.widget.ConstraintLayout>
