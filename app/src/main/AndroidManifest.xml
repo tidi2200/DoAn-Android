@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".Message" />
         <activity android:name=".Setting" />
+        <activity android:name=".ChangeUsername"/>
+
     </application>
 
 </manifest>
