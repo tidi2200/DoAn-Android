@@ -114,9 +114,6 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         //Lấy thông tin của receiver và hiển thị message list khi dữ liệu thay đổi sẽ được cập nhật
 
         reference = FirebaseDatabase.getInstance().getReference("user").child(userid);
@@ -160,7 +157,6 @@ public class MessageActivity extends AppCompatActivity {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("isseen", true);
                         snapshot.getRef().updateChildren(hashMap);
-
                     }
                 }
             }
@@ -214,7 +210,6 @@ public class MessageActivity extends AppCompatActivity {
                 }else
                     notify = false;
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -244,15 +239,12 @@ public class MessageActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(Call<MyResponse> call, Throwable t) {
-
                                 }
                             });
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -283,7 +275,6 @@ public class MessageActivity extends AppCompatActivity {
                 messageAdapter = new MessageAdapter(MessageActivity.this,lstChat,imageurl);
                 recyclerView.setAdapter(messageAdapter);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
