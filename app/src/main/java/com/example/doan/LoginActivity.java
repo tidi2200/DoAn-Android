@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText editLoginUsername,editLoginPassword;
     Button btnlogin,btnsignup;
     String user,pass;
-
+    TextView forgot_password;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
 
@@ -31,6 +33,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         editLoginUsername = (EditText)findViewById(R.id.edt_username);
         editLoginPassword = (EditText)findViewById(R.id.edt_password);
+        forgot_password = findViewById(R.id.forgot_password);
+
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,RessetPasswordActivity.class));
+            }
+        });
 
         auth = FirebaseAuth.getInstance();
 
@@ -40,29 +50,41 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                  user = editLoginUsername.getText().toString();
                  pass = editLoginPassword.getText().toString();
-                auth.signInWithEmailAndPassword(user, pass)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    Intent intent = new Intent(LoginActivity.this, Contact.class);
-                                    startActivity(intent);
-                                    finish();
+                String user = editLoginUsername.getText().toString();
+                String pass = editLoginPassword.getText().toString();
+                if(user.equals("") || pass.equals(""))
+                {
+                    Toast.makeText(LoginActivity.this, "Không được để trống tài khoản hoặc mật khẩu!!", Toast.LENGTH_SHORT).show();
+                }else {
+                    auth.signInWithEmailAndPassword(user, pass)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful()){
+
+                                        Intent intent = new Intent(LoginActivity.this, Contact.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu !!! ", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
+
             }
         });
         btnsignup = (Button)findViewById(R.id.btn_signup);
-       /* //Giu trang thai dang nhap
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(firebaseUser!=null){
-            Intent intent = new Intent(LoginActivity.this, Contact.class);
-            startActivity(intent);
-            finish();
-        }*/
+        //Giu trang thai dang nhap
+//        auth = FirebaseAuth.getInstance();
+//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//
+//        if(firebaseUser!=null){
+//            Intent intent = new Intent(LoginActivity.this, Contact.class);
+//            startActivity(intent);
+//            finish();
+ //       }
 
     }
 

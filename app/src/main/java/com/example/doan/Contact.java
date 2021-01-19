@@ -42,6 +42,8 @@ public class Contact extends AppCompatActivity {
 
     DatabaseReference reference;
 
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,6 @@ public class Contact extends AppCompatActivity {
         profileAvatar = findViewById(R.id.profileavatarcontact);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -113,19 +114,24 @@ public class Contact extends AppCompatActivity {
     //Hiện danh sách user lên recycler view (sự kiện conversation cho mỗi user được viết bên UserAdapter)
     public void DisplayData(){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
         DatabaseReference usersdRef = rootRef.child("user");
+
+
 
         usersdRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 lstUser.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
+                    if (ds.child("id").getValue(String.class).equals(firebaseUser.getUid())) {
+                        continue;
+                    }
                     String username = ds.child("username").getValue(String.class);
                     String id = ds.child("id").getValue(String.class);
-                    String img = ds.child("ImageURL").getValue(String.class);
+                    String img = ds.child("imageURL").getValue(String.class);
                     String status = ds.child("status").getValue(String.class);
                     User user = new User(id,username,img,status);
                     String usera = user.getUsername();
@@ -147,12 +153,14 @@ public class Contact extends AppCompatActivity {
         reference.updateChildren(hashMap);
     }
 
+   
 
 
     @Override
     protected void onResume() {
         super.onResume();
         status("online");
+
     }
     @Override
     protected void onPause() {

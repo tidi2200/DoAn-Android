@@ -8,12 +8,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="DoAn"
+        android:icon="@drawable/logo"
+        android:label="OneWeek Date"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+<!--        android:theme="@style/Theme.DoAn"-->
+        android:usesCleartextTraffic="true">
+        <activity android:name=".RessetPasswordActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,8 +29,10 @@
         <activity android:name=".MessageActivity"
             android:parentActivityName="com.example.doan.Contact"  android:stopWithTask="false">
         </activity>
-        <activity android:name=".Message"/>
-        <activity android:name=".Setting"/>
+        <activity android:name=".Message" />
+        <activity android:name=".Setting" />
+        <activity android:name=".ChangeUsername"/>
+
     </application>
 
 </manifest>

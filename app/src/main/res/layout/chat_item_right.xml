@@ -4,29 +4,39 @@
     android:layout_width="match_parent"
     android:padding="8dp"
     android:layout_height="wrap_content">
-    
+
     <RelativeLayout
         android:layout_width="300dp"
-        android:layout_alignParentEnd="true"
-        android:layout_height="wrap_content">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/profile_image"
-            android:visibility="gone"
-            />
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true">
 
         <TextView
+            android:id="@+id/txt_isSeenMSG"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_message_right"
-            android:text="Hi"
-            android:id="@+id/txt_msg"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:padding="8dp"
+            android:layout_below="@+id/txt_msg"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="0dp"
+            android:text="TextView"
+            android:textSize="12sp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/background_message_right"
+            android:padding="8dp"
+            android:text="Hi"
+            android:textColor="@color/black"
+            android:textSize="18sp"
 
             />
     </RelativeLayout>
