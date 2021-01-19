@@ -21,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Message extends AppCompatActivity {
@@ -33,7 +32,7 @@ public class Message extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
 
-    List<String> userList;
+    List<ChatList> userList;
     DatabaseReference reference;
     Context mContext;
     @Override
@@ -94,17 +93,17 @@ public class Message extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 lstUser.clear();
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     User user = ds.getValue(User.class);
-                    for(ChatList chatList : userList){
-                        if(user.getId().equals(chatList.getId())){
+                    for (ChatList chatList : userList) {
+                        if (user.getId().equals(chatList.getId())) {
                             lstUser.add(user);
                         }
                     }
-                    userAdapter = new UserAdapter(mContext, lstUser,true);
+                    userAdapter = new UserAdapter(mContext, lstUser, false);
                     recyclerview.setAdapter(userAdapter);
                 }
-                userAdapter = new UserAdapter(getApplicationContext(), lstUser, true);
+                userAdapter = new UserAdapter(getApplicationContext(), lstUser, false);
                 recyclerview.setAdapter(userAdapter);
             }
 
@@ -114,24 +113,4 @@ public class Message extends AppCompatActivity {
             }
         });
     }
-    private void status(String status){
-        reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("status",status);
-        reference.updateChildren(hashMap);
-    }
-
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        status("online");
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        status("offline");
-    }
-
 }

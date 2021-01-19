@@ -48,7 +48,6 @@ public class Contact extends AppCompatActivity {
         setContentView(R.layout.activity_contact);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.Contact);
-
         //Hiển thị username đang đăng nhập
         txtUserCurrent = findViewById(R.id.usernamecurrentdisplay);
         profileAvatar = findViewById(R.id.profileavatarcontact);
@@ -160,4 +159,5 @@ public class Contact extends AppCompatActivity {
         super.onPause();
         status("offline");
     }
+
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.doan">
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -25,12 +24,10 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".Contact"/>
         <activity android:name=".MessageActivity"
-            android:parentActivityName="com.example.doan.Contact" >
+            android:parentActivityName="com.example.doan.Contact"  android:stopWithTask="false">
         </activity>
         <activity android:name=".Message"/>
         <activity android:name=".Setting"/>
-
     </application>
-
 
 </manifest>

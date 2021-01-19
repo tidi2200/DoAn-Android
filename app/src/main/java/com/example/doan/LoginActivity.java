@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         btnsignup = (Button)findViewById(R.id.btn_signup);
-        //Giu trang thai dang nhap
+       /* //Giu trang thai dang nhap
         auth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, Contact.class);
             startActivity(intent);
             finish();
-        }
+        }*/
 
     }
 
