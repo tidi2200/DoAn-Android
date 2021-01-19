@@ -49,7 +49,7 @@
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
@@ -109,7 +109,7 @@
                 android:layout_marginTop="76dp"
                 android:layout_marginEnd="16dp"
                 android:background="#9423F8"
-                android:text="Change UsserName"
+                android:text="Change UserName"
                 android:textColor="#F3F1F1"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
